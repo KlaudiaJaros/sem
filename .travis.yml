@@ -1,1 +1,10 @@
+sudo: required
+
 language: java
+
+services:
+  - docker
+
+after_success:
+  - docker build -t sem_repo .
+  - docker run sem_repo
