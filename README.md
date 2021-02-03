@@ -5,5 +5,5 @@ working with IntelliJ, Docker and Travis CI
 
 - Master Build Status [![Build Status](https://travis-ci.com/KlaudiaJaros/sem_repo.svg?branch=master)](https://travis-ci.com/KlaudiaJaros/sem_repo)
 - Develop Build Status [![Build Status](https://travis-ci.com/KlaudiaJaros/sem_repo.svg?branch=master)](https://travis-ci.com/KlaudiaJaros/sem_repo)
-- License [![LICENSE](https://img.shields.io/github/license/KlaudiaJaros/sem.svg?style=flat-square)](https://github.com/KlaudiaJaros/sem/blob/master/LICENSE)
-- Release [![Releases](https://img.shields.io/github/release/KlaudiaJaros/sem/all.svg?style=flat-square)](https://github.com/KlaudiaJaros/sem/releases)
+- License [![LICENSE](https://img.shields.io/github/license/KlaudiaJaros/sem_repo.svg?style=flat-square)](https://github.com/KlaudiaJaros/sem_repo/blob/master/LICENSE)
+- Release [![Releases](https://img.shields.io/github/release/KlaudiaJaros/sem_repo/all.svg?style=flat-square)](https://github.com/KlaudiaJaros/sem_repo/releases)
