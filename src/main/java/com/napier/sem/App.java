@@ -1,16 +1,17 @@
 package com.napier.sem;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class App
 {
-    /*
-    Connection to MySQL database
+    /**
+     * Connection to MySQL database
      */
     private static Connection con = null;
 
     /**
-     * Connect to the MySQL database.
+     * Connects to the MySQL database.
      */
     public void connect()
     {
@@ -40,7 +41,7 @@ public class App
             }
             catch (SQLException sqle)
             {
-                System.out.println("Failed to connect to database attempt " + Integer.toString(i));
+                System.out.println("Failed to connect to database attempt " + i);
                 System.out.println(sqle.getMessage());
             }
             catch (InterruptedException ie)
@@ -50,8 +51,8 @@ public class App
         }
     }
 
-    /*
-    Disconnect from the mySQL database
+    /**
+     * Disconnects from the mySQL database
      */
     public void disconnect(){
         if (con != null)
@@ -67,6 +68,12 @@ public class App
             }
         }
     }
+
+    /**
+     * Retrieves an employee of a given ID number from the database.
+     * @param ID ID of an employee to retrieve
+     * @return an Employee or null if no such employee exists/connection was unsuccessful
+     */
     public Employee getEmployee(int ID)
     {
         try
@@ -114,6 +121,11 @@ public class App
             return null;
         }
     }
+
+    /**
+     * Prints an instance of an Employee to the console.
+     * @param emp Employee to print
+     */
     public void displayEmployee(Employee emp)
     {
         if (emp != null)
@@ -132,6 +144,63 @@ public class App
         }
     }
 
+    /**
+     * Gets a list of all employees (id, names, salary) saved in the employee database.
+     * @return A list of employees or null if unsuccessful/database is empty.
+     */
+    public ArrayList<Employee> getAllEmployees()
+    {
+        try{
+            // Create an SQL statement:
+            Statement stmt = con.createStatement();
+            // Create a string for the SQL statement:
+            String query = "SELECT e.emp_no, e.first_name, e.last_name, s.salary " +
+                            "FROM employees e " +
+                            "JOIN salaries s ON (e.emp_no=s.emp_no) " +
+                            "WHERE s.to_date='9999-01-01' " +
+                            "ORDER BY e.emp_no ASC ";
+
+            // Execute SQL stmt:
+            ResultSet rset = stmt.executeQuery(query);
+
+            // Extract employee information:
+            ArrayList<Employee> employees = new ArrayList<>();
+            while(rset.next()){
+                Employee e = new Employee();
+                e.emp_no=rset.getInt("e.emp_no");
+                e.first_name=rset.getString("e.first_name");
+                e.last_name=rset.getString("e.last_name");
+                e.salary=rset.getInt("s.salary");
+                employees.add(e);
+            }
+            return employees;
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to load employee details.");
+            return null;
+        }
+    }
+
+    /**
+     * Prints a list of employees and their salaries.
+     * @param employees The list of employees to print.
+     */
+    public static void printSalaries(ArrayList<Employee> employees)
+    {
+        // Print header
+        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
+        // Loop over all employees in the list
+        for (Employee emp : employees)
+        {
+            String emp_string =
+                    String.format("%-10s %-15s %-20s %-8s",
+                            emp.emp_no, emp.first_name, emp.last_name, emp.salary);
+            System.out.println(emp_string);
+        }
+    }
+
     public static void main(String[] args)
     {
         // Create a new app:
@@ -144,6 +213,11 @@ public class App
         Employee emp = a.getEmployee(255530);
         // Display results
         a.displayEmployee(emp);
+
+        ArrayList<Employee> employees = a.getAllEmployees();
+        System.out.println("The size of employees array: " + employees.size());
+
+        printSalaries(employees);
 
         // disconnect:
         a.disconnect();
