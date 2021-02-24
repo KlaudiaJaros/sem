@@ -201,6 +201,48 @@ public class App
         }
     }
 
+    /**
+     * Gets a list of employees with a given title and their salaries
+     * @param title title
+     * @return a list of employees with the given title and their salaries
+     */
+    public ArrayList<Employee> getSalariesByRole(String title)
+    {
+        try{
+            // Create an SQL statement:
+            Statement stmt = con.createStatement();
+            // Create a string for the SQL statement:
+            String query = "SELECT e.emp_no, e.first_name, e.last_name, s.salary " +
+                    "FROM employees e " +
+                    "JOIN salaries s ON (e.emp_no=s.emp_no) " +
+                    "JOIN titles t ON (e.emp_no=t.emp_no) " +
+                    "WHERE s.to_date='9999-01-01' AND t.to_date='9999-01-01' AND t.title='" + title + "' " +
+                    "ORDER BY e.emp_no ASC ";
+
+            // Execute SQL stmt:
+            ResultSet rset = stmt.executeQuery(query);
+
+            // Extract employee information:
+            ArrayList<Employee> employees = new ArrayList<>();
+            while(rset.next()){
+                Employee e = new Employee();
+                e.emp_no=rset.getInt("e.emp_no");
+                e.first_name=rset.getString("e.first_name");
+                e.last_name=rset.getString("e.last_name");
+                e.salary=rset.getInt("s.salary");
+                employees.add(e);
+            }
+            return employees;
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to load employee details.");
+            return null;
+        }
+    }
+
+
     public static void main(String[] args)
     {
         // Create a new app:
@@ -209,14 +251,17 @@ public class App
         //connect to database:
         a.connect();
 
-        // Get Employee
-        Employee emp = a.getEmployee(255530);
+        // Get an Employee:
+        /*Employee emp = a.getEmployee(255530);
         // Display results
-        a.displayEmployee(emp);
+        a.displayEmployee(emp); */
 
-        ArrayList<Employee> employees = a.getAllEmployees();
-        System.out.println("The size of employees array: " + employees.size());
+        // Salary report:
+        /* ArrayList<Employee> employees = a.getAllEmployees();
+        System.out.println("The size of employees array: " + employees.size()); */
 
+        // Salary by role:
+        ArrayList<Employee> employees = a.getSalariesByRole("Engineer");
         printSalaries(employees);
 
         // disconnect:
