@@ -1,5 +1,7 @@
 package com.napier.sem;
 
+import org.junit.Test;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -187,13 +189,19 @@ public class App
      * Prints a list of employees and their salaries.
      * @param employees The list of employees to print.
      */
-    public static void printSalaries(ArrayList<Employee> employees)
+    public void printSalaries(ArrayList<Employee> employees)
     {
+        if(employees==null){
+            System.out.println("No employees");
+            return;
+        }
         // Print header
         System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
         // Loop over all employees in the list
         for (Employee emp : employees)
         {
+            if (emp==null)
+                continue;
             String emp_string =
                     String.format("%-10s %-15s %-20s %-8s",
                             emp.emp_no, emp.first_name, emp.last_name, emp.salary);
@@ -243,6 +251,7 @@ public class App
     }
 
 
+
     public static void main(String[] args)
     {
         // Create a new app:
@@ -262,9 +271,11 @@ public class App
 
         // Salary by role:
         ArrayList<Employee> employees = a.getSalariesByRole("Engineer");
-        printSalaries(employees);
+        a.printSalaries(employees);
 
         // disconnect:
         a.disconnect();
+
+
     }
 }
