@@ -333,7 +333,15 @@ public class App
         App a = new App();
 
         //connect to database:
-        a.connect("db:3306");
+        // Connect to database
+        if (args.length < 1)
+        {
+            a.connect("localhost:3306");
+        }
+        else
+        {
+            a.connect(args[0]);
+        }
 
         // Get an Employee:
         /*Employee emp = a.getEmployee(255530);
