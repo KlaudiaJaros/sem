@@ -9,3 +9,4 @@ The purpose of the application is to manage employee records for a company. The 
 - Develop Build Status [![Build Status](https://travis-ci.com/KlaudiaJaros/sem_repo.svg?branch=master)](https://travis-ci.com/KlaudiaJaros/sem_repo)
 - License [![LICENSE](https://img.shields.io/github/license/KlaudiaJaros/sem_repo.svg?style=flat-square)](https://github.com/KlaudiaJaros/sem_repo/blob/master/LICENSE)
 - Release [![Releases](https://img.shields.io/github/release/KlaudiaJaros/sem_repo/all.svg?style=flat-square)](https://github.com/KlaudiaJaros/sem_repo/releases)
+- Code coverage [![codecov](https://codecov.io/gh/KlaudiaJaros/sem_repo/branch/master/graph/badge.svg?token=XTBL9J5XHJ)](https://codecov.io/gh/KlaudiaJaros/sem_repo)
