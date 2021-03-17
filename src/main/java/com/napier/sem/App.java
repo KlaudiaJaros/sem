@@ -250,7 +250,84 @@ public class App
         }
     }
 
+    /**
+     * Gets department by name
+     * @param dept_name name
+     * @return Department object
+     */
+    public Department getDepartment(String dept_name){
+        try{
+            // Create an SQL statement:
+            Statement stmt = con.createStatement();
+            // Create a string for the SQL statement:
+            String query = "SELECT d.dept_no, d.dept_name, dm.emp_no " +
+                    "FROM departments d " +
+                    "JOIN dept_manager dm ON (d.dept_no=dm.dept_no) " +
+                    "WHERE dm.to_date='9999-01-01' AND d.dept_name='" + dept_name +"'";
 
+            // Execute SQL stmt:
+            ResultSet rset = stmt.executeQuery(query);
+
+            // Extract employee information:
+            Department dp = new Department();
+            int employeeNo=0;
+            while(rset.next()){
+                dp.setDeptNo(rset.getString("d.dept_no"));
+                dp.setDeptName(rset.getString("d.dept_name"));
+                employeeNo=rset.getInt("dm.emp_no");
+            }
+            Employee manager = getEmployee(employeeNo);
+            dp.setManager(manager);
+            return dp;
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to load department details.");
+            return null;
+        }
+    }
+
+    /**
+     * Gets a list of employees in a given department and their salaries
+     * @param department department
+     * @return a list of employees in the given department and their salaries
+     */
+    public ArrayList<Employee> getSalariesByDepartment(Department department)
+    {
+        try{
+            // Create an SQL statement:
+            Statement stmt = con.createStatement();
+            // Create a string for the SQL statement:
+            String query = "SELECT e.emp_no, e.first_name, e.last_name, s.salary " +
+                    "FROM employees e " +
+                    "JOIN salaries s ON (e.emp_no=s.emp_no) " +
+                    "JOIN dept_emp d ON (e.emp_no=d.emp_no) " +
+                    "WHERE s.to_date='9999-01-01' AND d.dept_no='" + department.getDeptNo() + "' " +
+                    "ORDER BY e.emp_no ASC ";
+
+            // Execute SQL stmt:
+            ResultSet rset = stmt.executeQuery(query);
+
+            // Extract employee information:
+            ArrayList<Employee> employees = new ArrayList<>();
+            while(rset.next()){
+                Employee e = new Employee();
+                e.emp_no=rset.getInt("e.emp_no");
+                e.first_name=rset.getString("e.first_name");
+                e.last_name=rset.getString("e.last_name");
+                e.salary=rset.getInt("s.salary");
+                employees.add(e);
+            }
+            return employees;
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to load employee details.");
+            return null;
+        }
+    }
 
     public static void main(String[] args)
     {
@@ -270,7 +347,11 @@ public class App
         System.out.println("The size of employees array: " + employees.size()); */
 
         // Salary by role:
-        ArrayList<Employee> employees = a.getSalariesByRole("Engineer");
+        /*ArrayList<Employee> employees = a.getSalariesByRole("Engineer");
+        a.printSalaries(employees);*/
+
+        Department dept = a.getDepartment("Sales");
+        ArrayList<Employee> employees = a.getSalariesByDepartment(dept);
         a.printSalaries(employees);
 
         // disconnect:

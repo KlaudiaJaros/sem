@@ -1,7 +1,7 @@
 package com.napier.sem;
 
-/*
-Represents an Employee
+/**
+ * Employee class to store information about an employee.
  */
 public class Employee {
     public int emp_no;
